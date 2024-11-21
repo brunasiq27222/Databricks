@@ -1,31 +1,31 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC ### Explicação:
+# MAGIC ### Explanation:
 # MAGIC
-# MAGIC 1. *Importar bibliotecas*: As bibliotecas requests e json são importadas para enviar a mensagem para o Slack.
-# MAGIC 2. *Configurar webhook*: Substitua slack_webhook_url pela URL do webhook configurado no Slack.
+# MAGIC 1. *Import libraries*: The requests and json libraries are imported to send the message to Slack.
+# MAGIC 2. *Configure webhook*: Replace slack_webhook_url with the URL of the webhook configured in Slack.
 # MAGIC
-# MAGIC Para criar um notebook no Databricks que envie um alerta para o Slack quando os dados são carregados, você precisará seguir os seguintes passos:
+# MAGIC To create a Databricks notebook that sends an alert to Slack when data is loaded, you need to follow these steps:
 # MAGIC
-# MAGIC 1. *Configurar um webhook no Slack*.
-# MAGIC 2. *Criar o notebook no Databricks*.
-# MAGIC 3. *Escrever código para carregar os dados*.
-# MAGIC 4. *Enviar o alerta para o Slack usando o webhook*.
+# MAGIC 1. *Configure a webhook in Slack*.
+# MAGIC 2. *Create the notebook in Databricks*.
+# MAGIC 3. *Write code to load the data*.
+# MAGIC 4. *Send the alert to Slack using the webhook*.
 # MAGIC
-# MAGIC  Passo 1: Configurar um webhook no Slack
+# MAGIC Step 1: Configure a webhook in Slack
 # MAGIC
-# MAGIC 1. Vá para o Slack e navegue até *Apps*.
-# MAGIC 2. Procure por *Incoming Webhooks* e adicione ao seu workspace.
-# MAGIC 3. Configure um novo webhook e copie a URL gerada. Esta URL será usada para enviar mensagens para o Slack.
+# MAGIC 1. Go to Slack and navigate to *Apps*.
+# MAGIC 2. Search for *Incoming Webhooks* and add it to your workspace.
+# MAGIC 3. Configure a new webhook and copy the generated URL. This URL will be used to send messages to Slack.
 # MAGIC
 # MAGIC
-# MAGIC 3. *Função para enviar mensagem*: A função send_slack_message é usada para enviar a mensagem para o Slack.
-# MAGIC 4. *Leitura dos dados*: Os dados são lidos da tabela tabela.
-# MAGIC 5. *Calcular soma de fare_amount*: A soma de fare_amount é calculada usando groupBy().sum("fare_amount").
-# MAGIC 6. *Verificar soma*: Se a soma de fare_amount for maior que 115,00, uma mensagem de alerta com texto e emoji é enviada para o Slack.
-# MAGIC 7. *Salvar dados*: Os dados são salvos no schema marketing de forma incremental.
+# MAGIC 3. *Function to send message*: The send_slack_message function is used to send the message to Slack.
+# MAGIC 4. *Read data*: Data is read from the table.
+# MAGIC 5. *Calculate fare_amount sum*: The sum of fare_amount is calculated using groupBy().sum("fare_amount").
+# MAGIC 6. *Check sum*: If the fare_amount sum exceeds 115.00, an alert message with text and emoji will be sent to Slack.
+# MAGIC 7. *Save data*: The data is saved in the marketing schema incrementally.
 # MAGIC
-# MAGIC Execute o notebook no Databricks. Se a soma de fare_amount exceder 115,00, você deverá receber um alerta no Slack com a mensagem e o emoji especificados.
+# MAGIC Run the notebook in Databricks. If the fare_amount sum exceeds 115.00, you should receive an alert in Slack with the specified message and emoji.
 
 # COMMAND ----------
 
@@ -34,7 +34,7 @@ import requests
 import json
 
 # URL do webhook do Slack (substitua pela sua URL)
-slack_webhook_url = 'https://hooks.slack.com/services/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'
+slack_webhook_url = 'your_url'
 # Função para enviar mensagem para o Slack
 def send_slack_message(message):
     payload = {'text': message}
@@ -52,5 +52,5 @@ total_fare_amount = df.groupBy().sum("fare_amount").collect()[0][0]
 # Verificar se a soma de fare_amount é maior que 115,00
 if total_fare_amount > 115.00:
     # Mensagem de alerta com texto e emoji
-    message = "🚨Financeiro \nAtualmente seus gastos estão > 1.000,00"
+    message = "🚨Finance\nCurrently, your expenses are above $1,000.00."
     send_slack_message(message)
